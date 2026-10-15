@@ -1,13 +1,13 @@
 {
-  "version": "78a7243a3216",
-  "cacheName": "fb-shell-78a7243a3216",
+  "version": "46eb27ebd5a0",
+  "cacheName": "fb-shell-46eb27ebd5a0",
   "files": [
     "./",
     "./icon-180.png",
     "./icon-192.png",
     "./icon-512.png",
-    "./index-NQ8zcP68.js",
-    "./index-dQwTOM4w.css",
+    "./index-D2bKSydp.js",
+    "./index-UM9Ivr21.css",
     "./index.html",
     "./manifest.webmanifest",
     "./pdf.worker.min-DgRcL-GR.js",
