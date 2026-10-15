@@ -1,12 +1,17 @@
-/* FlightBrief service worker — generated. Version 2d1ea4801928.
+/* FlightBrief service worker — generated. Version 3172255c095f.
  * Precaches ONLY the static shell. Never caches uploaded PDFs, extracted text, assessments
- * or any API response. No skipWaiting: a new version activates only after all app windows close. */
-const VERSION = "2d1ea4801928";
-const CACHE = "fb-shell-2d1ea4801928";
-const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-CPMrZEQS.css","./index-CqNbIw0L.js","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
+ * or any API response. A new version never activates by itself: only after all app windows close, or when the crew taps
+ * "Update now" (the page posts SKIP_WAITING). */
+const VERSION = "3172255c095f";
+const CACHE = "fb-shell-3172255c095f";
+const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-CUU0xrmQ.css","./index-Cb8yg090.js","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
 const COMPLETE = './__shell_complete__';
 const abs = (p) => new URL(p, self.registration.scope).href;
 const SHELL = new Set(ASSETS.map(abs));
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
