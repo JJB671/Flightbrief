@@ -1,10 +1,10 @@
-/* FlightBrief service worker — generated. Version 14cbaa490ea7.
+/* FlightBrief service worker — generated. Version 2ed65425aa9a.
  * Precaches ONLY the static shell. Never caches uploaded PDFs, extracted text, assessments
  * or any API response. A new version never activates by itself: only after all app windows close, or when the crew taps
  * "Update now" (the page posts SKIP_WAITING). */
-const VERSION = "14cbaa490ea7";
-const CACHE = "fb-shell-14cbaa490ea7";
-const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-CmeFBgSQ.css","./index-D1SMGOUg.js","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
+const VERSION = "2ed65425aa9a";
+const CACHE = "fb-shell-2ed65425aa9a";
+const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-BaxBVZx1.css","./index-PlM4_2bl.js","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
 const COMPLETE = './__shell_complete__';
 const abs = (p) => new URL(p, self.registration.scope).href;
 const SHELL = new Set(ASSETS.map(abs));
