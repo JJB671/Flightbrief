@@ -1,10 +1,10 @@
-/* FlightBrief service worker — generated. Version 362e1dc2d920.
+/* FlightBrief service worker — generated. Version f87b28af4303.
  * Precaches ONLY the static shell. Never caches uploaded PDFs, extracted text, assessments
  * or any API response. A new version never activates by itself: only after all app windows close, or when the crew taps
  * "Update now" (the page posts SKIP_WAITING). */
-const VERSION = "362e1dc2d920";
-const CACHE = "fb-shell-362e1dc2d920";
-const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-CpaD-zj-.css","./index-D9eTT0EI.js","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
+const VERSION = "f87b28af4303";
+const CACHE = "fb-shell-f87b28af4303";
+const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-DqZaM73Y.js","./index-_XzL8Xt9.css","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
 const COMPLETE = './__shell_complete__';
 const abs = (p) => new URL(p, self.registration.scope).href;
 const SHELL = new Set(ASSETS.map(abs));
@@ -41,6 +41,8 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
   if (req.mode === 'navigate') {
+    // The tester copy's server routes (e.g. ./api/signin) go to the network: a sign-in must reach Cloudflare.
+    if (url.pathname.includes('/api/')) return;
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
       return (await cache.match(abs('./index.html'))) || (await cache.match(abs('./'))) || fetch(req);
