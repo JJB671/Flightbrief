@@ -1,12 +1,15 @@
-/* FlightBrief service worker — generated. Version f87b28af4303.
+/* FlightBrief service worker — generated. Version 6f6c43fbe89e.
  * Precaches ONLY the static shell. Never caches uploaded PDFs, extracted text, assessments
  * or any API response. A new version never activates by itself: only after all app windows close, or when the crew taps
  * "Update now" (the page posts SKIP_WAITING). */
-const VERSION = "f87b28af4303";
-const CACHE = "fb-shell-f87b28af4303";
-const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-DqZaM73Y.js","./index-_XzL8Xt9.css","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
+const VERSION = "6f6c43fbe89e";
+const CACHE = "fb-shell-6f6c43fbe89e";
+const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-DBxXb-CM.js","./index-WT0GVm6W.css","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
 const COMPLETE = './__shell_complete__';
 const abs = (p) => new URL(p, self.registration.scope).href;
+// Some hosts (Cloudflare static assets) answer ./index.html with a redirect to ./ ; Safari refuses a navigation answered
+// from the cache with a redirected response ("Response served by service worker has redirections"). Serve a clean copy.
+const clean = async (res) => (res && res.redirected ? new Response(await res.blob(), { status: res.status, statusText: res.statusText, headers: res.headers }) : res);
 const SHELL = new Set(ASSETS.map(abs));
 
 self.addEventListener('message', (event) => {
@@ -45,7 +48,7 @@ self.addEventListener('fetch', (event) => {
     if (url.pathname.includes('/api/')) return;
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
-      return (await cache.match(abs('./index.html'))) || (await cache.match(abs('./'))) || fetch(req);
+      return (await clean((await cache.match(abs('./index.html'))) || (await cache.match(abs('./'))))) || fetch(req);
     })());
     return;
   }
@@ -53,7 +56,7 @@ self.addEventListener('fetch', (event) => {
   if (SHELL.has(key)) {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
-      return (await cache.match(key)) || fetch(req);
+      return (await clean(await cache.match(key))) || fetch(req);
     })());
   }
   // Anything else: network only, never cached.
