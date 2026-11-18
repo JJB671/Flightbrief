@@ -1,10 +1,10 @@
-/* FlightBrief service worker — generated. Version 6f6c43fbe89e.
+/* FlightBrief service worker — generated. Version bebb810f2e13.
  * Precaches ONLY the static shell. Never caches uploaded PDFs, extracted text, assessments
  * or any API response. A new version never activates by itself: only after all app windows close, or when the crew taps
  * "Update now" (the page posts SKIP_WAITING). */
-const VERSION = "6f6c43fbe89e";
-const CACHE = "fb-shell-6f6c43fbe89e";
-const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-DBxXb-CM.js","./index-WT0GVm6W.css","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
+const VERSION = "bebb810f2e13";
+const CACHE = "fb-shell-bebb810f2e13";
+const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-BKyvPlY1.css","./index-DQIAE-l7.js","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
 const COMPLETE = './__shell_complete__';
 const abs = (p) => new URL(p, self.registration.scope).href;
 // Some hosts (Cloudflare static assets) answer ./index.html with a redirect to ./ ; Safari refuses a navigation answered
@@ -20,8 +20,16 @@ self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
     try {
-      // addAll is all-or-nothing; then verify every entry and write a completion marker last.
-      await cache.addAll(ASSETS.map((a) => new Request(abs(a), { cache: 'reload' })));
+      // Every file is fetched and checked before it is kept: it must come from this site (a sign-in page on another site,
+      // e.g. an expired Cloudflare Access session, must never be stored in place of an app file) and a script, style or
+      // data file must not be an HTML page. Any failure: the install fails and the previous version stays in control.
+      for (const a of ASSETS) {
+        const res = await fetch(new Request(abs(a), { cache: 'reload', credentials: 'same-origin' }));
+        if (!res.ok || res.type === 'opaqueredirect' || new URL(res.url).origin !== self.location.origin) throw new Error('blocked ' + a);
+        const type = res.headers.get('content-type') || '';
+        if (/.(m?js|css|json|webmanifest)$/.test(a) && type.includes('text/html')) throw new Error('html for ' + a);
+        await cache.put(abs(a), res);
+      }
       for (const a of ASSETS) if (!(await cache.match(abs(a)))) throw new Error('missing ' + a);
       await cache.put(abs(COMPLETE), new Response(VERSION));
     } catch (err) {
