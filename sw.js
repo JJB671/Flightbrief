@@ -1,10 +1,10 @@
-/* FlightBrief service worker — generated. Version 0ec2b498981d.
+/* FlightBrief service worker — generated. Version e37d5267bfc9.
  * Precaches ONLY the static shell. Never caches uploaded PDFs, extracted text, assessments
  * or any API response. A new version never activates by itself: only after all app windows close, or when the crew taps
  * "Update now" (the page posts SKIP_WAITING). */
-const VERSION = "0ec2b498981d";
-const CACHE = "fb-shell-0ec2b498981d";
-const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-BCtHeC9t.js","./index-D0Av_XdD.css","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
+const VERSION = "e37d5267bfc9";
+const CACHE = "fb-shell-e37d5267bfc9";
+const ASSETS = ["./","./icon-180.png","./icon-192.png","./icon-512.png","./index-DRxpLGdD.js","./index-fQ-dDAzD.css","./index.html","./manifest.webmanifest","./pdf.worker.min-DgRcL-GR.js","./pdf.worker.min-yatZIOMy.mjs","./asset-manifest.json"];
 const COMPLETE = './__shell_complete__';
 const abs = (p) => new URL(p, self.registration.scope).href;
 // Some hosts (Cloudflare static assets) answer ./index.html with a redirect to ./ ; Safari refuses a navigation answered
